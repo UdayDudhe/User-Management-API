@@ -1,14 +1,15 @@
-const express = require("express");
+const exp = require("express");
 const connection = require("./DatabaseConnection/dbConnection");
 var bodyParser = require("body-parser");
 
-const app = express();
+const app = exp();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("Server is Running");
 });
+
 //get all the users
 app.get("/getAllUsers", function (req, res) {
   // console.log("hit")
