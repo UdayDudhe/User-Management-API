@@ -29,8 +29,9 @@ app.get("/getAllUsers", function (req, res) {
 });
 //get one user
 app.get("/getOneUser", function (req, res) {
-  console.log(req.body.user_id);
-  const userid = req.body.user_id;
+  console.log("inside get one user ");
+  console.log(req.query.user_id);
+  const userid = req.query.user_id;
   connection.query(
     "select * from user_table where user_id=?",
     [userid],
@@ -48,8 +49,8 @@ app.get("/getOneUser", function (req, res) {
 });
 //delete one user
 app.get("/deleteOneUser", function (req, res) {
-  console.log(req.body.user_id);
-  const userid = req.body.user_id;
+  console.log(req.query.user_id);
+  const userid = req.query.user_id;
   connection.query(
     "delete from user_table where user_id=?",
     [userid],
@@ -67,9 +68,11 @@ app.get("/deleteOneUser", function (req, res) {
 });
 
 //create new user - register
-
 app.post("/register", function (req, res) {
   console.log("hitted");
+  console.log(req.body);
+  console.log(req.body.username);
+  console.log(req.body.password);
   const nm = req.body.username;
   const pwd = req.body.password;
   const roleid = 2;
@@ -79,7 +82,31 @@ app.post("/register", function (req, res) {
     function (err, result) {
       console.log("query hitted");
       if (err) {
-        //console.log(err);
+        console.log(err);
+        res.send("Error in inserting data");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//update data
+app.put("/update", function (req, res) {
+  console.log("hitted");
+  console.log(req.body);
+  console.log(req.body.username);
+  console.log(req.body.password);
+  const nm = req.body.username;
+  const pwd = req.body.password;
+  const roleid = 6;
+  connection.query(
+    "Update user_table set username=?,password=? where user_id=?",
+    [nm, pwd, roleid],
+    function (err, result) {
+      console.log("query hitted");
+      if (err) {
+        console.log(err);
         res.send("Error in inserting data");
       } else {
         res.send(result);
