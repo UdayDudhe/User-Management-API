@@ -49,7 +49,7 @@ function RegistrationPage() {
       .then((obj) => {
         console.log(obj);
         alert("Successfully Registered");
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => alert("Server Error: Cannot Register"));
   };
@@ -119,7 +119,7 @@ function RegistrationPage() {
 
   return (
     <>
-      <legend>Doctor Registration</legend>
+      <legend>User Registration</legend>
       <p>{JSON.stringify(user)}</p>
       <div className="registration-container">
         <form

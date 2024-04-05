@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function LoginPage() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errorMsg, setErrorMsg] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -23,9 +24,9 @@ function LoginPage() {
         const message = await response.text();
         setErrorMsg("");
         if (message === "Admin login successful") {
-          navigate("/admin-dashboard");
+          navigate("/admindashboard");
         } else if (message === "User login successful") {
-          navigate("/user-dashboard");
+          navigate("/userdashboard");
         } else {
           setErrorMsg(message);
         }
@@ -48,11 +49,15 @@ function LoginPage() {
       ...prevState,
       [name]: value,
     }));
+
+    // Check if both username and password are filled to enable the login button
+    setIsFormValid(formData.username.trim() !== "" && formData.password.trim() !== "");
   };
 
   const handleReset = () => {
     setFormData({ username: "", password: "" });
     setErrorMsg("");
+    setIsFormValid(false); // Reset the form validity state
   };
 
   return (
@@ -93,7 +98,7 @@ function LoginPage() {
             </tr>
             <tr>
               <td colSpan="2" className="button-container">
-                <button type="submit">Login</button>
+                <button type="submit" disabled={!isFormValid}>Login</button>
                 <button type="reset">Reset</button>
               </td>
             </tr>

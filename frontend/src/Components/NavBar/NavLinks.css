@@ -1,0 +1,18 @@
+.navbar-text {
+  color: lightgray;
+  margin-right: 25px;
+}
+
+.navbar-brand {
+  margin-left: 10px;
+}
+
+.navbar{
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn{
+  margin-right: 10px;
+  padding: 5px;
+}
