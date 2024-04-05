@@ -1,8 +1,9 @@
 const exp = require("express");
 const connection = require("./DatabaseConnection/dbConnection");
 var bodyParser = require("body-parser");
-
+const cors=require("cors");
 const app = exp();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

@@ -1,10 +1,19 @@
+import LoginPage from './Components/LoginPage/LoginPage';
 import './App.css';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import RegistrationPage from './Components/RegistrationPage/RegistrationPage';
+import ServerErrorPage from './Components/ServerErrorPage/ServerErrorPage';
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-center">Welcome User</h1>
-    </div>
+    <>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<LoginPage/>}/>
+      <Route path='/registration' element={<RegistrationPage/>}/>
+      <Route path='/ServerError' element={<ServerErrorPage/>}/>
+    </Routes>
+    </BrowserRouter>
+    </>
   );
 }
 
