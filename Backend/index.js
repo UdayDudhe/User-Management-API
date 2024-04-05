@@ -50,7 +50,7 @@ app.get("/getOneUser", function (req, res) {
   );
 });
 //delete one user
-app.get("/deleteUser/user_id", function (req, res) {
+app.get("/deleteUser", function (req, res) {
   console.log(req.params.user_id);
   const userid = req.query.user_id;
   connection.query(
