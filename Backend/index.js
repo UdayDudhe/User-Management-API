@@ -72,25 +72,59 @@ app.get("/deleteOneUser", function (req, res) {
 //create new user - register
 app.post("/register", function (req, res) {
   console.log("hitted");
-  console.log(req.body);
-  console.log(req.body.username);
-  console.log(req.body.password);
-  const nm = req.body.username;
-  const pwd = req.body.password;
+  const { username, password, first_name, last_name, email } = req.body;
   const roleid = 2;
   connection.query(
-    "Insert into user_table(username,password,role_id) values(?,?,?)",
-    [nm, pwd, roleid],
+    "INSERT INTO user_table(username, password, role_id, first_name, last_name, email_id) VALUES (?, ?, ?, ?, ?, ?)",
+    [username, password, roleid, first_name, last_name, email],
     function (err, result) {
       console.log("query hitted");
       if (err) {
-        console.log(err);
-        res.send("Error in inserting data");
+        if (err.code === 'ER_DUP_ENTRY') {
+          res.status(409).send("Username already exists");
+        } else {
+          console.log(err);
+          res.status(500).send("Error in inserting data");
+        }
       } else {
-        res.send(result);
+        res.status(200).send("Successfully registered");
       }
     }
   );
+});
+
+// Login endpoint
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send("Username and password are required");
+  }
+
+  const query = "SELECT * FROM user_table WHERE username = ? AND password = ?";
+  connection.query(query, [username, password], (err, results) => {
+    if (err) {
+      console.error("Error executing query: ", err);
+      return res.status(500).send("Error logging in");
+    }
+
+    if (results.length === 1) {
+      const user = results[0];
+      if (user.role_id === 1) {
+        return res.status(200).send("Admin login successful");
+      } else if (user.role_id === 2) {
+        if (user.is_approved === 1) {
+          return res.status(200).send("User login successful");
+        } else {
+          return res.status(403).send("User not approved by admin");
+        }
+      } else {
+        return res.status(401).send("Unauthorized");
+      }
+    } else {
+      return res.status(401).send("Invalid username or password");
+    }
+  });
 });
 
 //update data
