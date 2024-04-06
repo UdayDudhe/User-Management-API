@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminUserCard from "./AdminUser"; // Renamed component for clarity
+import AdminUser from "./AdminUser";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -18,19 +18,31 @@ function AdminDashboard() {
         setUsers(data);
       })
       .catch((error) => {
-        alert("Error fetching users: " + error.message); // Improved error message
+        alert("Error fetching users: " + error.message);
       });
   }, []);
 
-  const userCards = users.map((user) => (
-    <AdminUserCard key={user.user_id} {...user} /> // Added key prop
-  ));
-
   return (
-    <>
-      <legend>Admin User Management</legend>
-      <div className="container-fluid w-70">{userCards}</div>
-    </>
+    <div className="container">
+      <h2>Admin User Management</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <AdminUser key={user.user_id} {...user} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
