@@ -120,27 +120,34 @@ app.post("/disapproveUser", function (req, res) {
 
 
 //create new user - register
-app.post("/register", function (req, res) {
-  console.log("hitted");
+app.post('/register', (req, res) => {
   const { username, password, first_name, last_name, email } = req.body;
-  const roleid = 2;
-  connection.query(
-    "INSERT INTO user_table(username, password, role_id, first_name, last_name, email_id) VALUES (?, ?, ?, ?, ?, ?)",
-    [username, password, roleid, first_name, last_name, email],
-    function (err, result) {
-      console.log("query hitted");
-      if (err) {
-        if (err.code === 'ER_DUP_ENTRY') {
-          res.status(409).send("Username already exists");
-        } else {
-          console.log(err);
-          res.status(500).send("Error in inserting data");
-        }
-      } else {
-        res.status(200).send("Successfully registered");
-      }
+  console.log('Username:', username);
+  console.log('Password:', password);
+  console.log('First Name:', first_name);
+  console.log('Last Name:', last_name);
+  console.log('Email:', email);
+  const role_id=2;
+  const is_approved=0;
+  connection.query('SELECT * FROM user_table WHERE username = ?', [username], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
     }
-  );
+    if (results.length > 0) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    // Insert new user into database
+    connection.query('INSERT INTO user_table (username, password, first_name, last_name, email_id,role_id,is_approved) VALUES (?, ?, ?,?,?, ?, ?)', 
+      [username, password, first_name, last_name, email,role_id,is_approved],
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ message: 'User registered successfully' });
+      }
+    );
+  });
 });
 
 // Login endpoint

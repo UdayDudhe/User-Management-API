@@ -1,14 +1,14 @@
-import React, { useReducer } from "react";
+import React, {useReducer } from "react";
 import "./Registration.css";
 import { useNavigate } from "react-router-dom";
 
 function RegistrationPage() {
   const init = {
+    userName: { value: "", valid: false, touched: false, error: "" },
+    password: { value: "", valid: false, touched: false, error: "" },
     firstName: { value: "", valid: false, touched: false, error: "" },
     lastName: { value: "", valid: false, touched: false, error: "" },
-    userName: { value: "", valid: false, touched: false, error: "" },
     email: { value: "", valid: false, touched: false, error: "" },
-    password: { value: "", valid: false, touched: false, error: "" },
     formValid: false,
   };
 
@@ -26,22 +26,31 @@ function RegistrationPage() {
   const navigate = useNavigate();
 
   const sendData = (e) => {
+
+    console.log(JSON.stringify({
+      username: user.userName.value,
+      password: user.password.value,
+      first_name: user.firstName.value,
+      last_name: user.lastName.value,
+      email: user.email.value,
+    }));
+
     e.preventDefault();
     const reqOptions = {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
+        username: user.userName.value,
+        password: user.password.value,
         first_name: user.firstName.value,
         last_name: user.lastName.value,
-        username: user.userName.value,
         email: user.email.value,
-        password: user.password.value,
       }),
     };
     fetch("http://localhost:8080/register", reqOptions)
       .then((resp) => {
         if (resp.ok) {
-          return resp.json();
+          return resp.json(); 
         } else {
           throw new Error("Cannot Register");
         }
@@ -53,7 +62,7 @@ function RegistrationPage() {
       })
       .catch((error) => alert("Server Error: Cannot Register"));
   };
-  
+
   const validateData = (key, val) => {
     let valid = true;
     let error = "";
@@ -121,6 +130,7 @@ function RegistrationPage() {
     <>
       <legend>User Registration</legend>
       <p>{JSON.stringify(user)}</p>
+      
       <div className="registration-container">
         <form
           className="form-horizontal needs-validation"
@@ -129,6 +139,77 @@ function RegistrationPage() {
         >
           <table className="table">
             <tbody>
+              <tr>
+                <td>
+                  <label className="control-label" htmlFor="">
+                    User Name
+                  </label>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="userName"
+                    name="userName"
+                    value={user.userName.value}
+                    onChange={(e) => {
+                      handleChange("userName", e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      handleChange("userName", e.target.value);
+                    }}
+                    placeholder="rajsharma12"
+                    required
+                  />
+                  <div
+                    style={{
+                      display:
+                        user.userName.touched && !user.userName.valid
+                          ? "block"
+                          : "none",
+                      color: "red",
+                    }}
+                  >
+                    {user.userName.error}
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label className="control-label" htmlFor="password">
+                    Password
+                  </label>
+                </td>
+                <td>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    value={user.password.value}
+                    onChange={(e) => {
+                      handleChange("password", e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      handleChange("password", e.target.value);
+                    }}
+                    placeholder="Rajsharma@123"
+                    required
+                  />
+
+                  <div
+                    style={{
+                      display:
+                        user.password.touched && !user.password.valid
+                          ? "block"
+                          : "none",
+                      color: "red",
+                    }}
+                  >
+                    {user.password.error}
+                  </div>
+                </td>
+              </tr>
               <tr>
                 <td>
                   <label className="control-label" htmlFor="firstName">
@@ -148,7 +229,7 @@ function RegistrationPage() {
                     onBlur={(e) => {
                       handleChange("firstName", e.target.value);
                     }}
-                    placeholder="Enter First Name"
+                    placeholder="Raj"
                     required
                   />
                   <div
@@ -183,7 +264,7 @@ function RegistrationPage() {
                     onBlur={(e) => {
                       handleChange("lastName", e.target.value);
                     }}
-                    placeholder="Enter Last Name"
+                    placeholder="Patel"
                     required
                   />
                   <div
@@ -201,41 +282,6 @@ function RegistrationPage() {
               </tr>
               <tr>
                 <td>
-                  <label className="control-label" htmlFor="userName">
-                    User Name
-                  </label>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="userName"
-                    name="userName"
-                    value={user.userName.value}
-                    onChange={(e) => {
-                      handleChange("userName", e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      handleChange("userName", e.target.value);
-                    }}
-                    placeholder="Enter User Name"
-                    required
-                  />
-                  <div
-                    style={{
-                      display:
-                        user.userName.touched && !user.userName.valid
-                          ? "block"
-                          : "none",
-                      color: "red",
-                    }}
-                  >
-                    {user.userName.error}
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
                   <label className="control-label" htmlFor="email">
                     Email
                   </label>
@@ -246,6 +292,7 @@ function RegistrationPage() {
                     className="form-control"
                     id="email"
                     name="email"
+                    placeholder="RajPatel@gmail.com"
                     value={user.email.value}
                     onChange={(e) => {
                       handleChange("email", e.target.value);
@@ -253,7 +300,6 @@ function RegistrationPage() {
                     onBlur={(e) => {
                       handleChange("email", e.target.value);
                     }}
-                    placeholder="Enter Email"
                     required
                   />
                   <div
@@ -270,42 +316,7 @@ function RegistrationPage() {
                 </td>
               </tr>
               <tr>
-                <td>
-                  <label className="control-label" htmlFor="password">
-                    Password
-                  </label>
-                </td>
-                <td>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    value={user.password.value}
-                    onChange={(e) => {
-                      handleChange("password", e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      handleChange("password", e.target.value);
-                    }}
-                    placeholder="Enter Password"
-                    required
-                  />
-                  <div
-                    style={{
-                      display:
-                        user.password.touched && !user.password.valid
-                          ? "block"
-                          : "none",
-                      color: "red",
-                    }}
-                  >
-                    {user.password.error}
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="button-center">
+                <td colSpan="1" className="button-center">
                   <button
                     type="submit"
                     className="btn btn-primary"
@@ -314,6 +325,9 @@ function RegistrationPage() {
                   >
                     Register
                   </button>
+                </td>
+
+                <td colSpan="1" className="button-center">
                   <button
                     type="reset"
                     className="btn btn-primary"
