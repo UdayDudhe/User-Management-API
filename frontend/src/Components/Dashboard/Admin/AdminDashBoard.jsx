@@ -1,3 +1,5 @@
+// AdminDashboard.js
+
 import React, { useState, useEffect } from "react";
 import AdminUser from "./AdminUser";
 
@@ -22,17 +24,13 @@ function AdminDashboard() {
       });
   }, []);
 
-  // const handleLogout = () => {
-  //   // Implement logout logic here, such as clearing tokens or session data
-  //   localStorage.removeItem("token"); // Assuming you're using local storage for tokens
-  //   // Redirect the user to the login page
-  //   window.location.href = "/";
-  // };
+  useEffect(() => {
+    localStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
 
   return (
     <div className="container">
       <h2>Admin User Management</h2>
-      {/* <button onClick={handleLogout}>Logout</button> */}
       <table className="table">
         <thead>
           <tr>
