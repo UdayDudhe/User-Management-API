@@ -69,6 +69,30 @@ app.delete("/deleteUser/:user_id", function (req, res) {
   );
 });
 
+// POST endpoint to approve a user
+app.post("/approveUser", function (req, res) {
+  const userId = req.body.user_id;
+
+  connection.query(
+    "UPDATE user_table SET is_approved = 1 WHERE user_id = ?",
+    [userId],
+    function (err, result) {
+      if (err) {
+        console.error("Error approving user:", err);
+        res.status(500).send("Error approving user");
+      } else {
+        if (result.affectedRows === 1) {
+          console.log("User approved successfully");
+          res.status(200).send("User approved successfully");
+        } else {
+          console.log("User not found");
+          res.status(404).send("User not found");
+        }
+      }
+    }
+  );
+});
+
 
 //create new user - register
 app.post("/register", function (req, res) {

@@ -8,16 +8,49 @@ function AdminUser(prop) {
       method: "DELETE",
       headers: { "content-type": "application/json" },
     }).then((resp) => {
-      alert("Deleted");
-      window.location.reload();
+      if (resp.ok) {
+        alert("Deleted");
+        window.location.reload();
+      } else {
+        alert("Failed to delete user");
+      }
     });
+  };
+
+  const fetchApprove = () => {
+    fetch("http://localhost:8080/approveUser", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        user_id: prop.user_id,
+      }),
+    })
+      .then((resp) => {
+        if (resp.ok) {
+          alert("User approved");
+          window.location.reload();
+        } else {
+          alert("Failed to approve user");
+        }
+      })
+      .catch((error) => {
+        alert("Server Error: " + error.message);
+      });
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
-    const result = window.confirm("Do you want to proceed?");
+    const result = window.confirm("Do you want to delete this user?");
     if (result) {
       fetchDelete();
+    }
+  };
+
+  const handleApprove = (e) => {
+    e.preventDefault();
+    const result = window.confirm("Do you want to approve this user?");
+    if (result) {
+      fetchApprove();
     }
   };
 
@@ -29,8 +62,11 @@ function AdminUser(prop) {
       <td>{prop.username}</td>
       <td>{prop.email_id}</td>
       <td>
+        <button className="btn btn-sm btn-success" onClick={handleApprove}>
+          Approve
+        </button>
         <button className="btn btn-sm btn-danger" onClick={handleDelete}>
-          <i className="bi bi-trash"></i> Delete
+          Delete
         </button>
       </td>
     </tr>

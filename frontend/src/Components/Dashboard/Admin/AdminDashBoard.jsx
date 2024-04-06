@@ -33,6 +33,8 @@ function AdminDashboard() {
             <th>Last Name</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Approve User</th>
+            <th>Disapprove User</th>
             <th>Action</th>
           </tr>
         </thead>
