@@ -35,7 +35,7 @@ function AdminDashboard() {
             <th>Email</th>
             <th>Approve User</th>
             <th>Disapprove User</th>
-            <th>Action</th>
+            <th>Delete User</th>
           </tr>
         </thead>
         <tbody>

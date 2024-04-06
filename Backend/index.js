@@ -93,6 +93,31 @@ app.post("/approveUser", function (req, res) {
   );
 });
 
+// POST endpoint to disapprove a user
+app.post("/disapproveUser", function (req, res) {
+  const userId = req.body.user_id;
+
+  connection.query(
+    "UPDATE user_table SET is_approved = 0 WHERE user_id = ?",
+    [userId],
+    function (err, result) {
+      if (err) {
+        console.error("Error disapproving user:", err);
+        res.status(500).send("Error disapproving user");
+      } else {
+        if (result.affectedRows === 1) {
+          console.log("User disapproved successfully");
+          res.status(200).send("User disapproved successfully");
+        } else {
+          console.log("User not found");
+          res.status(404).send("User not found");
+        }
+      }
+    }
+  );
+});
+
+
 
 //create new user - register
 app.post("/register", function (req, res) {
