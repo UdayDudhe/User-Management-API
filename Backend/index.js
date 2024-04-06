@@ -49,25 +49,26 @@ app.get("/getOneUser", function (req, res) {
     }
   );
 });
-//delete one user
-app.get("/deleteUser", function (req, res) {
-  console.log(req.params.user_id);
-  const userid = req.query.user_id;
+
+// DELETE one user
+app.delete("/deleteUser/:user_id", function (req, res) {
+  const userId = req.params.user_id;
+
   connection.query(
-    "delete from user_table where user_id=?",
-    [userid],
+    "DELETE FROM user_table WHERE user_id = ?",
+    [userId],
     function (err, result) {
-      // console.log("delete one user hit");
-      // console.log(result);
-      // res.send(result);
       if (err) {
-        res.send("Error Fetching Data");
+        console.error("Error deleting user:", err);
+        res.status(500).send("Error deleting user");
       } else {
-        res.send(result);
+        console.log("User deleted successfully");
+        res.status(200).send("User deleted successfully");
       }
     }
   );
 });
+
 
 //create new user - register
 app.post("/register", function (req, res) {
