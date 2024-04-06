@@ -17,7 +17,7 @@ function NavLinks() {
       <nav className="navbar navbar-expand-lg sticky-top  navbar-dark bg-dark">
         <div>
           <Link className="navbar-brand" to="/">
-            <i class="bi bi-heart-pulse"></i>
+            <i className="bi bi-heart-pulse"></i>
             User Management System
           </Link>
         </div>
