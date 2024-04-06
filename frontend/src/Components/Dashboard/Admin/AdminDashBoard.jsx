@@ -22,9 +22,17 @@ function AdminDashboard() {
       });
   }, []);
 
+  // const handleLogout = () => {
+  //   // Implement logout logic here, such as clearing tokens or session data
+  //   localStorage.removeItem("token"); // Assuming you're using local storage for tokens
+  //   // Redirect the user to the login page
+  //   window.location.href = "/";
+  // };
+
   return (
     <div className="container">
       <h2>Admin User Management</h2>
+      {/* <button onClick={handleLogout}>Logout</button> */}
       <table className="table">
         <thead>
           <tr>

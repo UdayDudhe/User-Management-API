@@ -1,17 +1,9 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation} from "react-router-dom";
 import "./NavLinks.css";
 
 function NavLinks() {
   const location = useLocation();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("loginId");
-    navigate("/");
-  };
-
   return (
     <>
       <nav className="navbar navbar-expand-lg sticky-top  navbar-dark bg-dark">
@@ -29,7 +21,6 @@ function NavLinks() {
                 <Link className="navbar-text" to="/registration">
                   Register User
                 </Link>
-
               </div>
             </>
           )}
@@ -37,6 +28,13 @@ function NavLinks() {
             <>
               <Link className="navbar-text" to="/">
                 Login
+              </Link>
+            </>
+          )}
+          {location.pathname === "/admindashboard" && (
+            <>
+              <Link className="navbar-text" to="/">
+                Logout
               </Link>
             </>
           )}
