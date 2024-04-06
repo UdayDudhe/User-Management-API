@@ -8,39 +8,42 @@ function LoginPage() {
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
+  
+    fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+    .then((response) => {
       if (response.ok) {
-        const message = await response.text();
-        setErrorMsg("");
-        if (message === "Admin login successful") {
-          navigate("/admindashboard");
-        } else if (message === "User login successful") {
-          navigate("/userdashboard");
-        } else {
-          setErrorMsg(message);
-        }
+        return response.text();
       } else if (response.status === 401) {
-        setErrorMsg("Invalid username or password");
+        throw new Error("Invalid username or password");
       } else if (response.status === 403) {
-        setErrorMsg("User not approved by admin");
+        throw new Error("User not approved by admin");
       } else {
         throw new Error("Login failed");
       }
-    } catch (error) {
+    })
+    .then((message) => {
+      setErrorMsg("");
+      console.log(message)
+      if (message === "Admin login successful") {
+        navigate("/admindashboard");
+      } else if (message === "User login successful") {
+        navigate("/userdashboard");
+      } else {
+        setErrorMsg(message);
+      }
+    })
+    .catch((error) => {
       console.error("Error:", error);
       setErrorMsg("Error logging in");
-    }
+    });
   };
 
   const handleChange = (e) => {
