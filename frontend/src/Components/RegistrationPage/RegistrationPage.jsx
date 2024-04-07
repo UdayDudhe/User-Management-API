@@ -129,7 +129,7 @@ function RegistrationPage() {
   return (
     <>
       <legend>User Registration</legend>
-      <p>{JSON.stringify(user)}</p>
+      {/* <p>{JSON.stringify(user)}</p> */}
       
       <div className="registration-container">
         <form
